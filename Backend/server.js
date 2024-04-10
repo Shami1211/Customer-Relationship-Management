@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const ClientRoute = require("./Routes/ClientRoute.js");
-
+const SupplierRoute = require("./Routes/SupplierRoute.js");
 dotenv.config();
 
 // Connect to MongoDB
@@ -25,6 +25,7 @@ app.use(express.json());
 
 // Routes
 app.use('/clients', ClientRoute);
+app.use('/suppliers', SupplierRoute);
 
 const PORT = process.env.PORT || 8080;
 

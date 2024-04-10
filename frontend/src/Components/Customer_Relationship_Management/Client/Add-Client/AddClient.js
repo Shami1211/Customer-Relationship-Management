@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import axios from "axios";
-import "../../Client.css"; // Assuming you have a CSS file for styling
+
 
 function AddClient() {
   const navigate = useNavigate();
@@ -45,7 +45,7 @@ function AddClient() {
     try {
       await axios.post("http://localhost:8080/clients", inputs);
       showAlert("Client added successfully!");
-      navigate("/admin/clientdash");
+      navigate("/client-details");
     } catch (error) {
       console.error("Error adding client:", error);
       showAlert("Error adding client. Please try again.");
