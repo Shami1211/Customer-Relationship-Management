@@ -1,61 +1,61 @@
-const Item = require("../Model/ItemModel");
+const Client = require("../Model/ClientModel");
 
-const getAllItems = async (req, res, next) => {
+const getAllClients = async (req, res, next) => {
   try {
-    const items = await Item.find();
-    res.status(200).json({ items });
+    const clients = await Client.find();
+    res.status(200).json({ clients });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
-const addItem = async (req, res, next) => {
+const addClient = async (req, res, next) => {
   try {
-    const newItem = new Item(req.body);
-    await newItem.save();
-    res.status(201).json({ newItem });
+    const newClient = new Client(req.body);
+    await newClient.save();
+    res.status(201).json({ newClient });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
-const getItemById = async (req, res, next) => {
+const getClientById = async (req, res, next) => {
   try {
-    const item = await Item.findById(req.params.id);
-    if (!item) {
-      return res.status(404).json({ message: "Item not found" });
+    const client = await Client.findById(req.params.id);
+    if (!client) {
+      return res.status(404).json({ message: "Client not found" });
     }
-    res.status(200).json({ item });
+    res.status(200).json({ client });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
-const updateItem = async (req, res, next) => {
+const updateClient = async (req, res, next) => {
   try {
-    const updatedItem = await Item.findByIdAndUpdate(req.params.id, req.body, {
+    const updatedClient = await Client.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
     });
-    if (!updatedItem) {
-      return res.status(404).json({ message: "Item not found" });
+    if (!updatedClient) {
+      return res.status(404).json({ message: "Client not found" });
     }
-    res.status(200).json({ updatedItem });
+    res.status(200).json({ updatedClient });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
-const deleteItem = async (req, res, next) => {
+const deleteClient = async (req, res, next) => {
   try {
-    const deletedItem = await Item.findByIdAndDelete(req.params.id);
-    if (!deletedItem) {
-      return res.status(404).json({ message: "Item not found" });
+    const deletedClient = await Client.findByIdAndDelete(req.params.id);
+    if (!deletedClient) {
+      return res.status(404).json({ message: "Client not found" });
     }
-    res.status(200).json({ deletedItem });
+    res.status(200).json({ deletedClient });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Internal Server Error" });
@@ -63,9 +63,9 @@ const deleteItem = async (req, res, next) => {
 };
 
 module.exports = {
-  getAllItems,
-  addItem,
-  getItemById,
-  updateItem,
-  deleteItem,
+  getAllClients,
+  addClient,
+  getClientById,
+  updateClient,
+  deleteClient,
 };

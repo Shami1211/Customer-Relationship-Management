@@ -2,35 +2,47 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-const ItemSchema = new Schema({
-  imageUrl: {
-    type: String,
-    required: true,
-  },
+const ClientSchema = new Schema({
   name: {
     type: String,
     required: true,
   },
-  quantity: {
+  bname: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+  },
+  contact: {
+    type: String,
+    required: true,
+  },
+  address: {
+    type: String,
+    required: true,
+  },
+  tax: {
     type: Number,
     required: true,
   },
-  size: {
+  rproject: {
     type: String,
     required: true,
   },
-  category: { // New field for category
+  cproject: {
     type: String,
+    required: true,
+  },
+  total: {
+    type: Number,
     required: true,
   },
   date: {
     type: Date,
     default: Date.now,
   },
-  company: {
-    type: String,
-    required: true,
-  },
 });
 
-module.exports = mongoose.model("Item", ItemSchema);
+module.exports = mongoose.model("Client", ClientSchema);
