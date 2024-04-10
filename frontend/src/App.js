@@ -5,10 +5,7 @@ import AddClient from "./";
 import ItemDetails from "./Components/Items/Admin/Item/ItemDetails";
 import DashBoard from "./Components/Items/User/DashBoard/DashBoard";
 
-import HelmetsDetails from "./Components/Items/User/DashBoard/HelmetsDetails";
-import PadsDetails from "./Components/Items/User/DashBoard/PadsDetails";
-import ShoesDetails from "./Components/Items/User/DashBoard/ShoesDetails";
-import GetItem from "./Components/Items/User/GetItem/GetItem";
+
 function App() {
   return (
     <div>
