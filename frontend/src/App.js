@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Routes } from "react-router";
 
-import AddItem from "./Components/Items/Admin/Add-Items/AddItem";
+import AddClient from "./";
 import ItemDetails from "./Components/Items/Admin/Item/ItemDetails";
 import DashBoard from "./Components/Items/User/DashBoard/DashBoard";
 
@@ -14,8 +14,8 @@ function App() {
     <div>
       <React.Fragment>
         <Routes>
-          {/*Items*/}
-          <Route path="/admin/additem" element={<AddItem />} />
+          {/*Client*/}
+          <Route path="/" element={<AddClient />} />
           <Route path="/admin/itemdash" element={<ItemDetails />} />
           <Route path="/" element={<DashBoard />} />
    

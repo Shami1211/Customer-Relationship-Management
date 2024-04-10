@@ -1,16 +1,20 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import axios from "axios";
-import "../../Item.css";
-function AddRate() {
+import "../../Client.css"; // Assuming you have a CSS file for styling
+
+function AddClient() {
   const navigate = useNavigate();
   const [inputs, setInputs] = useState({
-    category: "", // Category as the first input
     name: "",
-    quantity: 0,
-    size: "",
-    company: "",
-    imageUrl: "",
+    bname: "",
+    email: "",
+    contact: "",
+    address: "",
+    tax: 0,
+    rproject: "",
+    cproject: "",
+    total: 0,
   });
 
   const handleChange = (event) => {
@@ -24,24 +28,27 @@ function AddRate() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (
-      !inputs.category || // Check if category is empty
       !inputs.name ||
-      !inputs.quantity ||
-      !inputs.size ||
-      !inputs.company ||
-      !inputs.imageUrl
+      !inputs.bname ||
+      !inputs.email ||
+      !inputs.contact ||
+      !inputs.address ||
+      !inputs.tax ||
+      !inputs.rproject ||
+      !inputs.cproject ||
+      !inputs.total
     ) {
       alert("Please provide all required information.");
       return;
     }
 
     try {
-      await axios.post("http://localhost:8080/items", inputs);
-      showAlert("Item added successfully!");
-      navigate("/admin/itemdash");
+      await axios.post("http://localhost:8080/clients", inputs);
+      showAlert("Client added successfully!");
+      navigate("/admin/clientdash");
     } catch (error) {
-      console.error("Error adding item:", error);
-      showAlert("Error adding item. Please try again.");
+      console.error("Error adding client:", error);
+      showAlert("Error adding client. Please try again.");
     }
   };
 
@@ -49,93 +56,138 @@ function AddRate() {
     alert(message);
   };
 
-  const handleViewItems = () => {
-    navigate("/");
+  const handleViewClients = () => {
+    navigate("/clients");
   };
 
   return (
     <div>
-      <div className="rate-full-box">
+      <div className="client-full-box">
         <div>
-          <h1 className="item-topic">
-            Add <span className="item-us">Item</span>
+          <h1 className="client-topic">
+            Add <span className="client-us">Client</span>
           </h1>
-          <form onSubmit={handleSubmit} className="item-full-box-form">
-            <label className="item-full-box-label">Category</label>
-            <br></br>
-            <select
-              name="category"
-              value={inputs.category}
-              onChange={handleChange}
-              className="catinpt"
-              required
-            >
-              <option value="">Select Category</option>
-              <option value="ball">Ball</option>
-              <option value="bat">Bat</option>
-              <option value="gloves">Gloves</option>
-              <option value="helmets">Helmets</option>
-              <option value="pads">Pads</option>
-              <option value="shoes">Shoes</option>
-            </select>
+          <form onSubmit={handleSubmit} className="client-full-box-form">
+            {/* Input fields for client information */}
+            {/* Name */}
+            <label className="client-full-box-label">Name</label>
             <br />
-            <label className="item-full-box-label">Name</label>
-            <br></br>
             <input
               type="text"
               name="name"
               value={inputs.name}
               onChange={handleChange}
-              className="item-full-box-input"
+              className="client-full-box-input"
               required
             />
             <br />
-            <label className="item-full-box-label">Quantity</label>
-            <br></br>
+
+            {/* Business Name */}
+            <label className="client-full-box-label">Business Name</label>
+            <br />
+            <input
+              type="text"
+              name="bname"
+              value={inputs.bname}
+              onChange={handleChange}
+              className="client-full-box-input"
+              required
+            />
+            <br />
+
+            {/* Email */}
+            <label className="client-full-box-label">Email</label>
+            <br />
+            <input
+              type="email"
+              name="email"
+              value={inputs.email}
+              onChange={handleChange}
+              className="client-full-box-input"
+              required
+            />
+            <br />
+
+            {/* Contact */}
+            <label className="client-full-box-label">Contact</label>
+            <br />
+            <input
+              type="text"
+              name="contact"
+              value={inputs.contact}
+              onChange={handleChange}
+              className="client-full-box-input"
+              required
+            />
+            <br />
+
+            {/* Address */}
+            <label className="client-full-box-label">Address</label>
+            <br />
+            <input
+              type="text"
+              name="address"
+              value={inputs.address}
+              onChange={handleChange}
+              className="client-full-box-input"
+              required
+            />
+            <br />
+
+            {/* Tax */}
+            <label className="client-full-box-label">Tax</label>
+            <br />
             <input
               type="number"
-              name="quantity"
-              value={inputs.quantity}
+              name="tax"
+              value={inputs.tax}
               onChange={handleChange}
-              className="item-full-box-input"
+              className="client-full-box-input"
               required
             />
             <br />
-            <label className="item-full-box-label">Size</label>
-            <br></br>
+
+            {/* Recent Project */}
+            <label className="client-full-box-label">Recent Project</label>
+            <br />
             <input
               type="text"
-              name="size"
-              value={inputs.size}
+              name="rproject"
+              value={inputs.rproject}
               onChange={handleChange}
-              className="item-full-box-input"
+              className="client-full-box-input"
               required
             />
             <br />
-            <label className="item-full-box-label">Company</label>
-            <br></br>
+
+            {/* Current Project */}
+            <label className="client-full-box-label">Current Project</label>
+            <br />
             <input
               type="text"
-              name="company"
-              value={inputs.company}
+              name="cproject"
+              value={inputs.cproject}
               onChange={handleChange}
-              className="item-full-box-input"
+              className="client-full-box-input"
               required
             />
             <br />
-            <label className="item-full-box-label">Image URL</label>
-            <br></br>
+
+            {/* Total */}
+            <label className="client-full-box-label">Total</label>
+            <br />
             <input
-              type="text"
-              name="imageUrl"
-              value={inputs.imageUrl}
+              type="number"
+              name="total"
+              value={inputs.total}
               onChange={handleChange}
-              className="item-full-box-input"
+              className="client-full-box-input"
               required
             />
             <br />
-            <button type="submit" className="item-add-btn">
-              Add Item
+
+            <button type="submit" className="client-add-btn">
+              Add Client
             </button>
           </form>
         </div>
@@ -144,4 +196,4 @@ function AddRate() {
   );
 }
 
-export default AddRate;
+export default AddClient;
