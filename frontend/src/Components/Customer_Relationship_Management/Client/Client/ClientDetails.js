@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef  } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import { useNavigate,Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
 
 const URL = "http://localhost:8080/clients";
@@ -10,18 +10,7 @@ const ClientDetails = () => {
   const [clients, setClients] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [noResults, setNoResults] = useState(false);
-  const [updateData, setUpdateData] = useState({
-    id: "",
-    name: "",
-    bname: "",
-    email: "",
-    contact: "",
-    address: "",
-    tax: 0,
-    rproject: "",
-    cproject: "",
-    total: 0,
-  });
+  const [updateDataMap, setUpdateDataMap] = useState({});
 
   useEffect(() => {
     fetchClients();
@@ -31,6 +20,23 @@ const ClientDetails = () => {
     try {
       const response = await axios.get(URL);
       setClients(response.data.clients);
+      // Initialize updateDataMap with empty objects for each client
+      const map = {};
+      response.data.clients.forEach((client) => {
+        map[client._id] = {
+          id: client._id,
+          name: client.name,
+          bname: client.bname,
+          email: client.email,
+          contact: client.contact,
+          address: client.address,
+          tax: client.tax,
+          rproject: client.rproject,
+          cproject: client.cproject,
+          total: client.total,
+        };
+      });
+      setUpdateDataMap(map);
     } catch (error) {
       console.error("Error fetching clients:", error);
     }
@@ -46,39 +52,24 @@ const ClientDetails = () => {
     setNoResults(filteredClients.length === 0);
   };
 
-  const handleUpdate = (id) => {
-    // Navigate to UpdateDetails page with the client ID
-    navigate(`/update/${id}`);
-  };
-
-  const handleChange = (newValue, name) => {
-    setUpdateData((prevData) => ({
-      ...prevData,
-      [name]: newValue,
-    }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    console.log("Update Data:", updateData); // Add this line for debugging
+  const handleUpdate = async (id) => {
     try {
-      await axios.put(`${URL}/${updateData.id}`, updateData);
-      fetchClients(); // Refresh clients after update
-      setUpdateData({
-        id: "",
-        name: "",
-        bname: "",
-        email: "",
-        contact: "",
-        address: "",
-        tax: 0,
-        rproject: "",
-        cproject: "",
-        total: 0,
-      });
+      await axios.put(`${URL}/${id}`, updateDataMap[id]);
+      // Refresh client data after update
+      fetchClients();
     } catch (error) {
       console.error("Error updating client:", error);
     }
+  };
+
+  const handleChange = (newValue, id, name) => {
+    setUpdateDataMap((prevMap) => ({
+      ...prevMap,
+      [id]: {
+        ...prevMap[id],
+        [name]: newValue,
+      },
+    }));
   };
 
   const handleDelete = async (id) => {
@@ -110,10 +101,9 @@ const ClientDetails = () => {
       </div>
       <div className="client_details_body">
         <div className="btn_con_client">
-        <Link to="/add-client">
-          <button>Add Client</button>
-        </Link>
-           
+          <Link to="/add-client">
+            <button>Add Client</button>
+          </Link>
           <button type="submit" className="client-add-btn-admin" onClick={handlePrint}>
             Generate Report
           </button>
@@ -158,18 +148,76 @@ const ClientDetails = () => {
               ) : (
                 clients.map((client) => (
                   <tr key={client._id}>
-                    <td>{client.name}</td>
-                    <td>{client.bname}</td>
-                    <td>{client.email}</td>
-                    <td>{client.contact}</td>
-                    <td>{client.address}</td>
-                    <td>{client.tax}</td>
-                    <td>{client.rproject}</td>
-                    <td>{client.cproject}</td>
-                    <td>{client.total}</td>
                     <td>
-                      <button className="update_btn_client" onClick={() => handleUpdate(client._id)}>Update</button>
-                      <button className="dlt_btn_client" onClick={() => handleDelete(client._id)}>Delete</button>
+                      <input
+                        type="text"
+                        value={updateDataMap[client._id]?.name || ""}
+                        onChange={(e) => handleChange(e.target.value, client._id, "name")}
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="text"
+                        value={updateDataMap[client._id]?.bname || ""}
+                        onChange={(e) => handleChange(e.target.value, client._id, "bname")}
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="text"
+                        value={updateDataMap[client._id]?.email || ""}
+                        onChange={(e) => handleChange(e.target.value, client._id, "email")}
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="text"
+                        value={updateDataMap[client._id]?.contact || ""}
+                        onChange={(e) => handleChange(e.target.value, client._id, "contact")}
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="text"
+                        value={updateDataMap[client._id]?.address || ""}
+                        onChange={(e) => handleChange(e.target.value, client._id, "address")}
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="number"
+                        value={updateDataMap[client._id]?.tax || 0}
+                        onChange={(e) => handleChange(e.target.value, client._id, "tax")}
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="text"
+                        value={updateDataMap[client._id]?.rproject || ""}
+                        onChange={(e) => handleChange(e.target.value, client._id, "rproject")}
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="text"
+                        value={updateDataMap[client._id]?.cproject || ""}
+                        onChange={(e) => handleChange(e.target.value, client._id, "cproject")}
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="number"
+                        value={updateDataMap[client._id]?.total || 0}
+                        onChange={(e) => handleChange(e.target.value, client._id, "total")}
+                      />
+                    </td>
+                    <td>
+                      <button className="update_btn_client" onClick={() => handleUpdate(client._id)}>
+                        Update
+                      </button>
+                      <button className="dlt_btn_client" onClick={() => handleDelete(client._id)}>
+                        Delete
+                      </button>
                     </td>
                   </tr>
                 ))
