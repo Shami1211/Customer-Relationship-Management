@@ -2,11 +2,16 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router";
 import { useParams } from "react-router-dom";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
 
 const UpdateDetails = () => {
   const [inputs, setInputs] = useState({});
   const history = useNavigate();
-  const id = useParams().id;
+  const { id } = useParams();
 
   useEffect(() => {
     const fetchHandler = async () => {
@@ -23,25 +28,25 @@ const UpdateDetails = () => {
   }, [id]);
 
   const sendRequest = async () => {
-    await axios
-      .put(`http://localhost:8080/suppliers/${id}`, {
-        name: String(inputs.name),
-        bname: String(inputs.bname),
-        email: String(inputs.email),
-        contact: String(inputs.contact),
-        address: String(inputs.address),
-        tax: String(inputs.tax),
-        total: String(inputs.total),
-        date: String(inputs.date),
-      })
-      .then((res) => res.data);
+    await axios.put(`http://localhost:8080/suppliers/${id}`, {
+      name: String(inputs.name),
+      bname: String(inputs.bname),
+      email: String(inputs.email),
+      contact: String(inputs.contact),
+      address: String(inputs.address),
+      tax: String(inputs.tax),
+      total: String(inputs.total),
+      date: String(inputs.date),
+    });
   };
+
   const handleChange = (e) => {
     setInputs((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,
     }));
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(inputs);
@@ -51,107 +56,90 @@ const UpdateDetails = () => {
       history("/supplier-details");
     });
   };
+
   return (
-    <div className="update-details-container">
-      <h1 className="admin_topic_client">
-        Update <span className="client-us">Supplier</span>
-      </h1>
-      <div className="item_full_box">
-        <form onSubmit={handleSubmit} className="item_form_admin">
-          <label className="form_box_item_lable">Name</label>
-          <br />
-          <input
-            type="text"
+    <Container maxWidth="sm">
+      <Box sx={{ marginTop: 4 }}>
+        <Typography variant="h4" gutterBottom>
+          Update Supplier
+        </Typography>
+        <form onSubmit={handleSubmit}>
+          <TextField
+            fullWidth
+            label="Name"
             name="name"
-            className="form_box_item_input"
-            value={inputs.name}
+            value={inputs.name || ""}
             onChange={handleChange}
+            margin="normal"
+            variant="outlined"
           />
-          <br />
-
-          {/* Business Name */}
-          <label className="form_box_item_lable">Business Name</label>
-          <br />
-          <input
-            type="text"
+          <TextField
+            fullWidth
+            label="Business Name"
             name="bname"
-            className="form_box_item_input"
-            value={inputs.bname}
+            value={inputs.bname || ""}
             onChange={handleChange}
+            margin="normal"
+            variant="outlined"
           />
-          <br />
-
-          {/* Email */}
-          <label className="form_box_item_lable">Email</label>
-          <br />
-          <input
-            type="email"
+          <TextField
+            fullWidth
+            label="Email"
             name="email"
-            value={inputs.email}
+            value={inputs.email || ""}
             onChange={handleChange}
-            className="form_box_item_input"
+            margin="normal"
+            variant="outlined"
             required
           />
-          <br />
-
-          {/* Contact */}
-          <label className="form_box_item_lable">Contact</label>
-          <br />
-          <input
-            type="text"
+          <TextField
+            fullWidth
+            label="Contact"
             name="contact"
-            value={inputs.contact}
+            value={inputs.contact || ""}
             onChange={handleChange}
-            className="form_box_item_input"
+            margin="normal"
+            variant="outlined"
             required
           />
-          <br />
-
-          {/* Address */}
-          <label className="form_box_item_lable">Address</label>
-          <br />
-          <input
-            type="text"
+          <TextField
+            fullWidth
+            label="Address"
             name="address"
-            value={inputs.address}
+            value={inputs.address || ""}
             onChange={handleChange}
-            className="form_box_item_input"
+            margin="normal"
+            variant="outlined"
             required
           />
-          <br />
-
-          {/* Tax */}
-          <label className="form_box_item_lable">Tax</label>
-          <br />
-          <input
-            type="number"
+          <TextField
+            fullWidth
+            label="Tax"
             name="tax"
-            value={inputs.tax}
-            onChange={handleChange}
-            className="form_box_item_input"
-            required
-          />
-          <br />
-
-       
-
-          {/* Total */}
-          <label className="form_box_item_lable">Total</label>
-          <br />
-          <input
             type="number"
-            name="total"
-            value={inputs.total}
+            value={inputs.tax || ""}
             onChange={handleChange}
-            className="form_box_item_input"
+            margin="normal"
+            variant="outlined"
             required
           />
-          <br />
-
-          <button type="submit" className="admin_form_cneter_btn">Update</button>
+          <TextField
+            fullWidth
+            label="Total"
+            name="total"
+            type="number"
+            value={inputs.total || ""}
+            onChange={handleChange}
+            margin="normal"
+            variant="outlined"
+            required
+          />
+          <Button type="submit" variant="contained" color="primary">
+            Update
+          </Button>
         </form>
-      </div>
-    </div>
+      </Box>
+    </Container>
   );
 };
 

@@ -1,8 +1,64 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
+  adminTopicClient: {
+    textAlign: "center",
+    fontWeight: "bold",
+    margin: "10px 0",
+    textTransform: "capitalize",
+    fontSize: 35,
+  },
+  itemFullBox: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    margin: "25px 0",
+  },
+  itemFormAdmin: {
+    border: "2px solid #2196f3",
+    padding: 25,
+    borderRadius: 5,
+    width: 450,
+    boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.5)",
+  },
+  formBoxItemLabel: {
+    fontWeight: "bold",
+    textTransform: "capitalize",
+    fontSize: 18,
+  },
+  formBoxItemInput: {
+    width: "100%",
+    fontSize: 17,
+    padding: "8px",
+    borderRadius: 3,
+    margin: "8px 0",
+    border: "1.5px solid #2196f3",
+  },
+  adminFormCenterBtn: {
+    backgroundColor: "#2196f3",
+    color: "white",
+    border: "2px solid #2196f3",
+    fontSize: 20,
+    cursor: "pointer",
+    borderRadius: 3,
+    padding: "8px 16px",
+    textDecoration: "none",
+    fontWeight: "bold",
+    margin: "20px auto 0 auto",
+    display: "flex",
+    textTransform: "capitalize",
+    boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.5)",
+  },
+}));
 
 function AddClient() {
+  const classes = useStyles();
   const navigate = useNavigate();
   const [inputs, setInputs] = useState({
     name: "",
@@ -55,143 +111,144 @@ function AddClient() {
     alert(message);
   };
 
-  const handleViewClients = () => {
-    navigate("/clients");
-  };
-
   return (
     <div>
-      <div className="client-full-box">
-        <div>
-          <h1 className="admin_topic_client">
-            Add <span className="client-us">Client</span>
-          </h1>
-          <div className="item_full_box">
-            <form onSubmit={handleSubmit} className="item_form_admin">
-              {/* Input fields for client information */}
-              {/* Name */}
-              <label className="form_box_item_lable">Name</label>
-              <br />
-              <input
-                type="text"
-                name="name"
-                value={inputs.name}
-                onChange={handleChange}
-                className="form_box_item_input"
-                required
-              />
-              <br />
+      <Typography variant="h1" className={classes.adminTopicClient}>
+        Add <span className="client-us">Client</span>
+      </Typography>
+      <div className={classes.itemFullBox}>
+        <form onSubmit={handleSubmit} className={classes.itemFormAdmin}>
+          {/* Input fields for client information */}
+          {/* Name */}
+          <label className={classes.formBoxItemLabel}>Name</label>
+          <br />
+          <TextField
+            type="text"
+            name="name"
+            value={inputs.name}
+            onChange={handleChange}
+            variant="outlined"
+            className={classes.formBoxItemInput}
+            required
+          />
+          <br />
 
-              {/* Business Name */}
-              <label className="form_box_item_lable">Business Name</label>
-              <br />
-              <input
-                type="text"
-                name="bname"
-                value={inputs.bname}
-                onChange={handleChange}
-                className="form_box_item_input"
-                required
-              />
-              <br />
+          {/* Business Name */}
+          <label className={classes.formBoxItemLabel}>Business Name</label>
+          <br />
+          <TextField
+            type="text"
+            name="bname"
+            value={inputs.bname}
+            onChange={handleChange}
+            variant="outlined"
+            className={classes.formBoxItemInput}
+            required
+          />
+          <br />
 
-              {/* Email */}
-              <label className="form_box_item_lable">Email</label>
-              <br />
-              <input
-                type="email"
-                name="email"
-                value={inputs.email}
-                onChange={handleChange}
-                className="form_box_item_input"
-                required
-              />
-              <br />
+          {/* Email */}
+          <label className={classes.formBoxItemLabel}>Email</label>
+          <br />
+          <TextField
+            type="email"
+            name="email"
+            value={inputs.email}
+            onChange={handleChange}
+            variant="outlined"
+            className={classes.formBoxItemInput}
+            required
+          />
+          <br />
 
-              {/* Contact */}
-              <label className="form_box_item_lable">Contact</label>
-              <br />
-              <input
-                type="text"
-                name="contact"
-                value={inputs.contact}
-                onChange={handleChange}
-                className="form_box_item_input"
-                required
-              />
-              <br />
+          {/* Contact */}
+          <label className={classes.formBoxItemLabel}>Contact</label>
+          <br />
+          <TextField
+            type="text"
+            name="contact"
+            value={inputs.contact}
+            onChange={handleChange}
+            variant="outlined"
+            className={classes.formBoxItemInput}
+            required
+          />
+          <br />
 
-              {/* Address */}
-              <label className="form_box_item_lable">Address</label>
-              <br />
-              <input
-                type="text"
-                name="address"
-                value={inputs.address}
-                onChange={handleChange}
-                className="form_box_item_input"
-                required
-              />
-              <br />
+          {/* Address */}
+          <label className={classes.formBoxItemLabel}>Address</label>
+          <br />
+          <TextField
+            type="text"
+            name="address"
+            value={inputs.address}
+            onChange={handleChange}
+            variant="outlined"
+            className={classes.formBoxItemInput}
+            required
+          />
+          <br />
 
-              {/* Tax */}
-              <label className="form_box_item_lable">Tax</label>
-              <br />
-              <input
-                type="number"
-                name="tax"
-                value={inputs.tax}
-                onChange={handleChange}
-                className="form_box_item_input"
-                required
-              />
-              <br />
+          {/* Tax */}
+          <label className={classes.formBoxItemLabel}>Tax</label>
+          <br />
+          <TextField
+            type="number"
+            name="tax"
+            value={inputs.tax}
+            onChange={handleChange}
+            variant="outlined"
+            className={classes.formBoxItemInput}
+            required
+          />
+          <br />
 
-              {/* Recent Project */}
-              <label className="form_box_item_lable">Recent Project</label>
-              <br />
-              <input
-                type="text"
-                name="rproject"
-                value={inputs.rproject}
-                onChange={handleChange}
-                className="form_box_item_input"
-                required
-              />
-              <br />
+          {/* Recent Project */}
+          <label className={classes.formBoxItemLabel}>Recent Project</label>
+          <br />
+          <TextField
+            type="text"
+            name="rproject"
+            value={inputs.rproject}
+            onChange={handleChange}
+            variant="outlined"
+            className={classes.formBoxItemInput}
+            required
+          />
+          <br />
 
-              {/* Current Project */}
-              <label className="form_box_item_lable">Current Project</label>
-              <br />
-              <input
-                type="text"
-                name="cproject"
-                value={inputs.cproject}
-                onChange={handleChange}
-                className="form_box_item_input"
-                required
-              />
-              <br />
+          {/* Current Project */}
+          <label className={classes.formBoxItemLabel}>Current Project</label>
+          <br />
+          <TextField
+            type="text"
+            name="cproject"
+            value={inputs.cproject}
+            onChange={handleChange}
+            variant="outlined"
+            className={classes.formBoxItemInput}
+            required
+          />
+          <br />
 
-              {/* Total */}
-              <label className="form_box_item_lable">Total</label>
-              <br />
-              <input
-                type="number"
-                name="total"
-                value={inputs.total}
-                onChange={handleChange}
-                className="form_box_item_input"
-                required
-              />
-              <br />
+          {/* Total */}
+          <label className={classes.formBoxItemLabel}>Total</label>
+          <br />
+          <TextField
+            type="number"
+            name="total"
+            value={inputs.total}
+            onChange={handleChange}
+            variant="outlined"
+            className={classes.formBoxItemInput}
+            required
+          />
+          <br />
 
-              <button type="submit" className="admin_form_cneter_btn">
-                Add Client
-              </button>
-            </form>
-          </div>
-        </div>
+          <Button type="submit" className={classes.adminFormCenterBtn}>
+            Add Client
+          </Button>
+        </form>
       </div>
     </div>
   );

@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import {
+  TextField,
+  Typography,
+  Button,
+  CircularProgress,
+  Paper,
+} from "@material-ui/core";
 
 const UpdateDetails = () => {
   const { id } = useParams(); // Get the ID from the URL params
@@ -54,141 +61,125 @@ const UpdateDetails = () => {
     }
   };
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
+  if (loading) return <CircularProgress />;
+
+  if (error) return <Typography variant="h6">{error}</Typography>;
 
   return (
     <div className="update-details-container">
       <div className="client-full-box">
-        <div>
-          <h1 className="admin_topic_client">
-            Update <span className="client-us">Client</span>
-          </h1>
-          <div className="item_full_box">
-            <form onSubmit={handleSubmit} className="item_form_admin">
-              {/* Input fields for client information */}
-              {/* Name */}
-              <label className="form_box_item_lable">Name</label>
-              <br />
-              <input
-                type="text"
-                name="name"
-                value={clientDetails.name}
-                onChange={handleChange}
-                className="form_box_item_input"
-                required
-              />
-              <br />
+        <Typography variant="h1" className="admin_topic_client">
+          Update <span className="client-us">Client</span>
+        </Typography>
+        <div className="item_full_box">
+          <form onSubmit={handleSubmit} className="item_form_admin">
+            {/* Input fields for client information */}
+            {/* Name */}
+            <TextField
+              label="Name"
+              name="name"
+              value={clientDetails.name}
+              onChange={handleChange}
+              className="form_box_item_input"
+              required
+            />
+            <br />
 
-              {/* Business Name */}
-              <label className="form_box_item_lable">Business Name</label>
-              <br />
-              <input
-                type="text"
-                name="bname"
-                value={clientDetails.bname}
-                onChange={handleChange}
-                className="form_box_item_input"
-                required
-              />
-              <br />
+            {/* Business Name */}
+            <TextField
+              label="Business Name"
+              name="bname"
+              value={clientDetails.bname}
+              onChange={handleChange}
+              className="form_box_item_input"
+              required
+            />
+            <br />
 
-              {/* Email */}
-              <label className="form_box_item_lable">Email</label>
-              <br />
-              <input
-                type="email"
-                name="email"
-                value={clientDetails.email}
-                onChange={handleChange}
-                className="form_box_item_input"
-                required
-              />
-              <br />
+            {/* Email */}
+            <TextField
+              type="email"
+              label="Email"
+              name="email"
+              value={clientDetails.email}
+              onChange={handleChange}
+              className="form_box_item_input"
+              required
+            />
+            <br />
 
-              {/* Contact */}
-              <label className="form_box_item_lable">Contact</label>
-              <br />
-              <input
-                type="text"
-                name="contact"
-                value={clientDetails.contact}
-                onChange={handleChange}
-                className="form_box_item_input"
-                required
-              />
-              <br />
+            {/* Contact */}
+            <TextField
+              label="Contact"
+              name="contact"
+              value={clientDetails.contact}
+              onChange={handleChange}
+              className="form_box_item_input"
+              required
+            />
+            <br />
 
-              {/* Address */}
-              <label className="form_box_item_lable">Address</label>
-              <br />
-              <input
-                type="text"
-                name="address"
-                value={clientDetails.address}
-                onChange={handleChange}
-                className="form_box_item_input"
-                required
-              />
-              <br />
+            {/* Address */}
+            <TextField
+              label="Address"
+              name="address"
+              value={clientDetails.address}
+              onChange={handleChange}
+              className="form_box_item_input"
+              required
+            />
+            <br />
 
-              {/* Tax */}
-              <label className="form_box_item_lable">Tax</label>
-              <br />
-              <input
-                type="number"
-                name="tax"
-                value={clientDetails.tax}
-                onChange={handleChange}
-                className="form_box_item_input"
-                required
-              />
-              <br />
+            {/* Tax */}
+            <TextField
+              type="number"
+              label="Tax"
+              name="tax"
+              value={clientDetails.tax}
+              onChange={handleChange}
+              className="form_box_item_input"
+              required
+            />
+            <br />
 
-              {/* Recent Project */}
-              <label className="form_box_item_lable">Recent Project</label>
-              <br />
-              <input
-                type="text"
-                name="rproject"
-                value={clientDetails.rproject}
-                onChange={handleChange}
-                className="form_box_item_input"
-                required
-              />
-              <br />
+            {/* Recent Project */}
+            <TextField
+              label="Recent Project"
+              name="rproject"
+              value={clientDetails.rproject}
+              onChange={handleChange}
+              className="form_box_item_input"
+              required
+            />
+            <br />
 
-              {/* Current Project */}
-              <label className="form_box_item_lable">Current Project</label>
-              <br />
-              <input
-                type="text"
-                name="cproject"
-                value={clientDetails.cproject}
-                onChange={handleChange}
-                className="form_box_item_input"
-                required
-              />
-              <br />
+            {/* Current Project */}
+            <TextField
+              label="Current Project"
+              name="cproject"
+              value={clientDetails.cproject}
+              onChange={handleChange}
+              className="form_box_item_input"
+              required
+            />
+            <br />
 
-              {/* Total */}
-              <label className="form_box_item_lable">Total</label>
-              <br />
-              <input
-                type="number"
-                name="total"
-                value={clientDetails.total}
-                onChange={handleChange}
-                className="form_box_item_input"
-                required
-              />
-              <br />
+            {/* Total */}
+            <TextField
+              type="number"
+              label="Total"
+              name="total"
+              value={clientDetails.total}
+              onChange={handleChange}
+              className="form_box_item_input"
+              required
+            />
+            <br />
 
-              <button type="submit" className="admin_form_cneter_btn">
-                Update Details
-              </button>
-            </form>
-          </div>
+            <Button type="submit" variant="contained" color="primary">
+              Update Details
+            </Button>
+          </form>
         </div>
       </div>
     </div>

@@ -1,9 +1,28 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
+import {
+  TextField,
+  Button,
+  Typography,
+  Container,
+  makeStyles,
+} from "@material-ui/core";
 import axios from "axios";
 
+const useStyles = makeStyles((theme) => ({
+  formContainer: {
+    marginTop: theme.spacing(4),
+  },
+  formControl: {
+    marginBottom: theme.spacing(2),
+  },
+  submitButton: {
+    marginTop: theme.spacing(2),
+  },
+}));
 
 function AddSupplier() {
+  const classes = useStyles();
   const navigate = useNavigate();
   const [inputs, setInputs] = useState({
     name: "",
@@ -52,119 +71,87 @@ function AddSupplier() {
     alert(message);
   };
 
-  const handleViewSuppliers = () => {
-    navigate("/suppliers");
-  };
-
   return (
-    <div>
-      <div className="supplier-full-box">
-        <div>
-          <h1 className="admin_topic_client">
-            Add <span className="supplier-us">Supplier</span>
-          </h1>
-          <div className="item_full_box">
-            <form onSubmit={handleSubmit} className="item_form_admin">
-              {/* Input fields for supplier information */}
-              {/* Name */}
-              <label className="form_box_item_lable">Name</label>
-              <br />
-              <input
-                type="text"
-                name="name"
-                value={inputs.name}
-                onChange={handleChange}
-                className="form_box_item_input"
-                required
-              />
-              <br />
-
-              {/* Business Name */}
-              <label className="form_box_item_lable">Business Name</label>
-              <br />
-              <input
-                type="text"
-                name="bname"
-                value={inputs.bname}
-                onChange={handleChange}
-                className="form_box_item_input"
-                required
-              />
-              <br />
-
-              {/* Email */}
-              <label className="form_box_item_lable">Email</label>
-              <br />
-              <input
-                type="email"
-                name="email"
-                value={inputs.email}
-                onChange={handleChange}
-                className="form_box_item_input"
-                required
-              />
-              <br />
-
-              {/* Contact */}
-              <label className="form_box_item_lable">Contact</label>
-              <br />
-              <input
-                type="text"
-                name="contact"
-                value={inputs.contact}
-                onChange={handleChange}
-                className="form_box_item_input"
-                required
-              />
-              <br />
-
-              {/* Address */}
-              <label className="form_box_item_lable">Address</label>
-              <br />
-              <input
-                type="text"
-                name="address"
-                value={inputs.address}
-                onChange={handleChange}
-                className="form_box_item_input"
-                required
-              />
-              <br />
-
-              {/* Tax */}
-              <label className="form_box_item_lable">Tax</label>
-              <br />
-              <input
-                type="number"
-                name="tax"
-                value={inputs.tax}
-                onChange={handleChange}
-                className="form_box_item_input"
-                required
-              />
-              <br />
-
-              {/* Total */}
-              <label className="form_box_item_lable">Total</label>
-              <br />
-              <input
-                type="number"
-                name="total"
-                value={inputs.total}
-                onChange={handleChange}
-                className="form_box_item_input"
-                required
-              />
-              <br />
-
-              <button type="submit" className="admin_form_cneter_btn">
-                Add Supplier
-              </button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
+    <Container maxWidth="sm">
+      <Typography variant="h4" align="center" gutterBottom>
+        Add Supplier
+      </Typography>
+      <form onSubmit={handleSubmit} className={classes.formContainer}>
+        <TextField
+          className={classes.formControl}
+          label="Name"
+          name="name"
+          value={inputs.name}
+          onChange={handleChange}
+          fullWidth
+          required
+        />
+        <TextField
+          className={classes.formControl}
+          label="Business Name"
+          name="bname"
+          value={inputs.bname}
+          onChange={handleChange}
+          fullWidth
+          required
+        />
+        <TextField
+          className={classes.formControl}
+          label="Email"
+          name="email"
+          value={inputs.email}
+          onChange={handleChange}
+          fullWidth
+          required
+        />
+        <TextField
+          className={classes.formControl}
+          label="Contact"
+          name="contact"
+          value={inputs.contact}
+          onChange={handleChange}
+          fullWidth
+          required
+        />
+        <TextField
+          className={classes.formControl}
+          label="Address"
+          name="address"
+          value={inputs.address}
+          onChange={handleChange}
+          fullWidth
+          required
+        />
+        <TextField
+          className={classes.formControl}
+          label="Tax"
+          name="tax"
+          type="number"
+          value={inputs.tax}
+          onChange={handleChange}
+          fullWidth
+          required
+        />
+        <TextField
+          className={classes.formControl}
+          label="Total"
+          name="total"
+          type="number"
+          value={inputs.total}
+          onChange={handleChange}
+          fullWidth
+          required
+        />
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          className={classes.submitButton}
+        >
+          Add Supplier
+        </Button>
+      </form>
+    </Container>
   );
 }
 

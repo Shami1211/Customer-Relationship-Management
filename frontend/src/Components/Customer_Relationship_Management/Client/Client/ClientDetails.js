@@ -2,25 +2,83 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
-import "../../Customer.css";
+import Typography from "@material-ui/core/Typography";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+import Table from "@material-ui/core/Table";
+import TableHead from "@material-ui/core/TableHead";
+import TableBody from "@material-ui/core/TableBody";
+import TableRow from "@material-ui/core/TableRow";
+import TableCell from "@material-ui/core/TableCell";
+import Paper from "@material-ui/core/Paper";
+import Alert from "@material-ui/lab/Alert";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import { makeStyles } from "@material-ui/core/styles";
+
 const URL = "http://localhost:8080/clients";
 
+const useStyles = makeStyles((theme) => ({
+  clientDetails: {
+    padding: theme.spacing(2),
+  },
+  actionAdminCon: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: theme.spacing(2),
+  },
+  searchBoxAdmin: {
+    display: "flex",
+    alignItems: "center",
+  },
+  searchInput: {
+    marginRight: theme.spacing(2),
+  },
+  adminTopicClient: {
+    fontWeight: "bold",
+    marginBottom: theme.spacing(2),
+  },
+  tableDetailsAdmin: {
+    marginTop: theme.spacing(2),
+  },
+  alertNoResults: {
+    marginBottom: theme.spacing(2),
+  },
+  btnDashAdmin: {
+    marginRight: theme.spacing(2),
+  },
+  btnDashAdminDlt: {
+    backgroundColor: "red",
+    color: "white",
+    border: "2px solid red",
+    fontWeight: "bold",
+    textTransform: "capitalize",
+    "&:hover": {
+      backgroundColor: "#d32f2f",
+      border: "2px solid #d32f2f",
+    },
+  },
+}));
+
 const ClientDetails = () => {
+  const classes = useStyles();
   const navigate = useNavigate();
   const [clients, setClients] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [noResults, setNoResults] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [updateDataMap, setUpdateDataMap] = useState({});
+  const summaryRef = useRef();
 
   useEffect(() => {
     fetchClients();
   }, []);
 
   const fetchClients = async () => {
+    setLoading(true);
     try {
       const response = await axios.get(URL);
       setClients(response.data.clients);
-      // Initialize updateDataMap with empty objects for each client
       const map = {};
       response.data.clients.forEach((client) => {
         map[client._id] = {
@@ -37,8 +95,10 @@ const ClientDetails = () => {
         };
       });
       setUpdateDataMap(map);
+      setLoading(false);
     } catch (error) {
       console.error("Error fetching clients:", error);
+      setLoading(false);
     }
   };
 
@@ -55,7 +115,6 @@ const ClientDetails = () => {
   const handleUpdate = async (id) => {
     try {
       await axios.put(`${URL}/${id}`, updateDataMap[id]);
-      // Refresh client data after update
       fetchClients();
     } catch (error) {
       console.error("Error updating client:", error);
@@ -77,15 +136,12 @@ const ClientDetails = () => {
       try {
         await axios.delete(`${URL}/${id}`);
         const updatedClients = clients.filter((client) => client._id !== id);
-        setClients(updatedClients); // Update clients after delete
+        setClients(updatedClients);
       } catch (error) {
         console.error("Error deleting client:", error);
       }
     }
   };
-
-  /*PDF---------- */
-  const summaryRef = useRef();
 
   const handlePrint = useReactToPrint({
     content: () => summaryRef.current,
@@ -95,98 +151,100 @@ const ClientDetails = () => {
   });
 
   return (
-    <div className="clientdetails">
-      <div className="admin_topic_client">
-        Admin<span className="admin_sub_topic_client"> Dash Board</span>
-      </div>
-      <div className="client_details_body">
-        <div className="action_admin_con">
-          <div className="search_box_admin">
-            <input
-              onChange={(e) => setSearchQuery(e.target.value)}
-              type="text"
-              name="search"
-              className="serch_inpt"
-              placeholder="Search Clients"
-            />
-            <button onClick={handleSearch} className="btn_dash_admin">
-              Search
-            </button>
-          </div>
-          <div className="btn_con_client">
-            <Link to="/add-client">
-              <button className="btn_dash_admin">Add Client</button>
-            </Link>
-            <button
-              type="submit"
-              className="btn_dash_admin"
-              onClick={handlePrint}
-            >
-              Generate Report
-            </button>
-          </div>
+    <div className={classes.clientDetails}>
+      <Typography variant="h1" className={classes.adminTopicClient}>
+        Admin <span className="admin_sub_topic_client">Dashboard</span>
+      </Typography>
+      <div className={classes.actionAdminCon}>
+        <div className={classes.searchBoxAdmin}>
+          <TextField
+            onChange={(e) => setSearchQuery(e.target.value)}
+            type="text"
+            name="search"
+            className={classes.searchInput}
+            placeholder="Search Clients"
+          />
+          <Button
+            onClick={handleSearch}
+            variant="contained"
+            color="primary"
+            className={classes.btnDashAdmin}
+          >
+            Search
+          </Button>
         </div>
-        <div ref={summaryRef}>
-          <div className="admin_topic_client">
-            Client<span className="admin_sub_topic_client"> Details</span>
-          </div>
-          <br />
-          <table className="table_details_admin">
-            <thead>
-              <tr>
-                <th className="admin_tbl_th">Name</th>
-                <th className="admin_tbl_th">Business Name</th>
-                <th className="admin_tbl_th">Email</th>
-                <th className="admin_tbl_th">Contact</th>
-                <th className="admin_tbl_th">Address</th>
-                <th className="admin_tbl_th">Tax</th>
-                <th className="admin_tbl_th">Recent Project</th>
-                <th className="admin_tbl_th">Current Project</th>
-                <th className="admin_tbl_th">Total</th>
-                <th className="admin_tbl_th">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {noResults ? (
-                <tr>
-                  <td className="admin_tbl_td" colSpan="10">
-                    No results found
-                  </td>
-                </tr>
-              ) : (
-                clients.map((client) => (
-                  <tr key={client._id}>
-                    <td className="admin_tbl_td">{client.name}</td>
-                    <td className="admin_tbl_td">{client.bname}</td>
-                    <td className="admin_tbl_td">{client.email}</td>
-                    <td className="admin_tbl_td">{client.contact}</td>
-                    <td className="admin_tbl_td">{client.address}</td>
-                    <td className="admin_tbl_td">{client.tax}</td>
-                    <td className="admin_tbl_td">{client.rproject}</td>
-                    <td className="admin_tbl_td">{client.cproject}</td>
-                    <td className="admin_tbl_td">{client.total}</td>
-                    <td className="admin_tbl_td">
-                      <Link
-                        to={`/updateclient/${client._id}`}
-                        className="btn_dash_admin"
-                      >
-                        Update
-                      </Link>
-
-                      <button
-                        className="btn_dash_admin_dlt"
-                        onClick={() => handleDelete(client._id)}
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+        <div>
+          <Link to="/add-client">
+            <Button variant="contained" color="primary" className={classes.btnDashAdmin}>
+              Add Client
+            </Button>
+          </Link>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.btnDashAdmin}
+            onClick={handlePrint}
+          >
+            Generate Report
+          </Button>
         </div>
       </div>
+      {loading ? (
+        <CircularProgress />
+      ) : (
+        <Paper ref={summaryRef}>
+          <Typography variant="h2" className={classes.adminTopicClient}>
+            Client <span className="admin_sub_topic_client">Details</span>
+          </Typography>
+          {noResults && (
+            <Alert severity="info" className={classes.alertNoResults}>
+              No results found
+            </Alert>
+          )}
+          <Table className={classes.tableDetailsAdmin}>
+            <TableHead>
+              <TableRow>
+                <TableCell>Name</TableCell>
+                <TableCell>Business Name</TableCell>
+                <TableCell>Email</TableCell>
+                <TableCell>Contact</TableCell>
+                <TableCell>Address</TableCell>
+                <TableCell>Tax</TableCell>
+                <TableCell>Recent Project</TableCell>
+                <TableCell>Current Project</TableCell>
+                <TableCell>Total</TableCell>
+                <TableCell>Actions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {clients.map((client) => (
+                <TableRow key={client._id}>
+                  <TableCell>{client.name}</TableCell>
+                  <TableCell>{client.bname}</TableCell>
+                  <TableCell>{client.email}</TableCell>
+                  <TableCell>{client.contact}</TableCell>
+                  <TableCell>{client.address}</TableCell>
+                  <TableCell>{client.tax}</TableCell>
+                  <TableCell>{client.rproject}</TableCell>
+                  <TableCell>{client.cproject}</TableCell>
+                  <TableCell>{client.total}</TableCell>
+                  <TableCell>
+                    <Link to={`/updateclient/${client._id}`} className={classes.btnDashAdmin}>
+                      Update
+                    </Link>
+                    <Button
+                      className={classes.btnDashAdminDlt}
+                      onClick={() => handleDelete(client._id)}
+                    >
+                      Delete
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </Paper>
+      )}
     </div>
   );
 };
