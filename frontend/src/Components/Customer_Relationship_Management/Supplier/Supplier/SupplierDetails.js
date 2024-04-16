@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import { useNavigate,Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
 
 const URL = "http://localhost:8080/suppliers";
@@ -81,7 +81,9 @@ const SupplierDetails = () => {
     if (window.confirm("Are you sure you want to delete this supplier?")) {
       try {
         await axios.delete(`${URL}/${id}`);
-        const updatedSuppliers = suppliers.filter((supplier) => supplier._id !== id);
+        const updatedSuppliers = suppliers.filter(
+          (supplier) => supplier._id !== id
+        );
         setSuppliers(updatedSuppliers); // Update suppliers after delete
       } catch (error) {
         console.error("Error deleting supplier:", error);
@@ -100,67 +102,87 @@ const SupplierDetails = () => {
   });
 
   return (
-    <div className="supplier-details">
-      <div className="admin_topic_supplier">
+    <div className="clientdetails">
+      <div className="admin_topic_client">
         Admin<span className="admin_sub_topic_supplier"> Dashboard</span>
       </div>
       <div className="supplier_details_body">
-        <div className="btn_con_supplier">
-        <Link to="/add-supplier">
-          <button>Add Client</button>
-        </Link>
-          <button type="submit" className="supplier-add-btn-admin" onClick={handlePrint}>
-            Generate Report
-          </button>
-        </div>
-        <div className="search_box_supplier">
-          <input
-            onChange={(e) => setSearchQuery(e.target.value)}
-            type="text"
-            name="search"
-            className="search_ipt"
-            placeholder="Search Suppliers"
-          />
-          <button onClick={handleSearch} className="searchbtn">
-            Search
-          </button>
+        <div className="action_admin_con">
+          <div className="search_box_admin">
+            <input
+              onChange={(e) => setSearchQuery(e.target.value)}
+              type="text"
+              name="search"
+              className="serch_inpt"
+              placeholder="Search Clients"
+            />
+            <button onClick={handleSearch} className="btn_dash_admin">
+              Search
+            </button>
+          </div>
+          <div className="btn_con_client">
+            <Link to="/add-supplier">
+              <button className="btn_dash_admin">Add Supplier</button>
+            </Link>
+            <button
+              type="submit"
+              className="btn_dash_admin"
+              onClick={handlePrint}
+            >
+              Generate Report
+            </button>
+          </div>
         </div>
         <div ref={summaryRef}>
-          <div className="admin_topic_supplier">
-            Supplier<span className="admin_sub_topic_supplier"> Details</span>
+          <div className="admin_topic_client">
+            Supplier<span className="admin_sub_topic_client"> Details</span>
           </div>
+
           <br />
-          <table className="supplier-table">
+          <table className="table_details_admin">
             <thead>
               <tr>
-                <th>Name</th>
-                <th>Business Name</th>
-                <th>Email</th>
-                <th>Contact</th>
-                <th>Address</th>
-                <th>Tax</th>
-                <th>Total</th>
-                <th>Actions</th>
+                <th className="admin_tbl_th">Name</th>
+                <th className="admin_tbl_th">Business Name</th>
+                <th className="admin_tbl_th">Email</th>
+                <th className="admin_tbl_th">Contact</th>
+                <th className="admin_tbl_th">Address</th>
+                <th className="admin_tbl_th">Tax</th>
+                <th className="admin_tbl_th">Total</th>
+                <th className="admin_tbl_th">Actions</th>
               </tr>
             </thead>
             <tbody>
               {noResults ? (
                 <tr>
-                  <td colSpan="8">No results found</td>
+                  <td className="admin_tbl_td" colSpan="8">
+                    No results found
+                  </td>
                 </tr>
               ) : (
                 suppliers.map((supplier) => (
                   <tr key={supplier._id}>
-                    <td>{supplier.name}</td>
-                    <td>{supplier.bname}</td>
-                    <td>{supplier.email}</td>
-                    <td>{supplier.contact}</td>
-                    <td>{supplier.address}</td>
-                    <td>{supplier.tax}</td>
-                    <td>{supplier.total}</td>
-                    <td>
-                      <button className="update_btn_supplier" onClick={() => handleUpdate(supplier._id)}>Update</button>
-                      <button className="dlt_btn_supplier" onClick={() => handleDelete(supplier._id)}>Delete</button>
+                    <td className="admin_tbl_td">{supplier.name}</td>
+                    <td className="admin_tbl_td">{supplier.bname}</td>
+                    <td className="admin_tbl_td">{supplier.email}</td>
+                    <td className="admin_tbl_td">{supplier.contact}</td>
+                    <td className="admin_tbl_td">{supplier.address}</td>
+                    <td className="admin_tbl_td">{supplier.tax}</td>
+                    <td className="admin_tbl_td">{supplier.total}</td>
+                    <td className="admin_tbl_td">
+                     
+                      <Link
+                        to={`/updatesuplier/${supplier._id}`}
+                        className="btn_dash_admin"
+                      >
+                        Update
+                      </Link>
+                      <button
+                        className="btn_dash_admin_dlt"
+                        onClick={() => handleDelete(supplier._id)}
+                      >
+                        Delete
+                      </button>
                     </td>
                   </tr>
                 ))

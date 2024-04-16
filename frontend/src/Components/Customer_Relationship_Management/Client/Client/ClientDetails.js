@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
-
+import "../../Customer.css";
 const URL = "http://localhost:8080/clients";
 
 const ClientDetails = () => {
@@ -100,122 +100,83 @@ const ClientDetails = () => {
         Admin<span className="admin_sub_topic_client"> Dash Board</span>
       </div>
       <div className="client_details_body">
-        <div className="btn_con_client">
-          <Link to="/add-client">
-            <button>Add Client</button>
-          </Link>
-          <button type="submit" className="client-add-btn-admin" onClick={handlePrint}>
-            Generate Report
-          </button>
-        </div>
-        <div className="search_box_client">
-          <input
-            onChange={(e) => setSearchQuery(e.target.value)}
-            type="text"
-            name="search"
-            className="serch_ipt"
-            placeholder="Search Clients"
-          />
-          <button onClick={handleSearch} className="serchbtn">
-            Search
-          </button>
+        <div className="action_admin_con">
+          <div className="search_box_admin">
+            <input
+              onChange={(e) => setSearchQuery(e.target.value)}
+              type="text"
+              name="search"
+              className="serch_inpt"
+              placeholder="Search Clients"
+            />
+            <button onClick={handleSearch} className="btn_dash_admin">
+              Search
+            </button>
+          </div>
+          <div className="btn_con_client">
+            <Link to="/add-client">
+              <button className="btn_dash_admin">Add Client</button>
+            </Link>
+            <button
+              type="submit"
+              className="btn_dash_admin"
+              onClick={handlePrint}
+            >
+              Generate Report
+            </button>
+          </div>
         </div>
         <div ref={summaryRef}>
           <div className="admin_topic_client">
             Client<span className="admin_sub_topic_client"> Details</span>
           </div>
           <br />
-          <table className="client-table">
+          <table className="table_details_admin">
             <thead>
               <tr>
-                <th>Name</th>
-                <th>Business Name</th>
-                <th>Email</th>
-                <th>Contact</th>
-                <th>Address</th>
-                <th>Tax</th>
-                <th>Recent Project</th>
-                <th>Current Project</th>
-                <th>Total</th>
-                <th>Actions</th>
+                <th className="admin_tbl_th">Name</th>
+                <th className="admin_tbl_th">Business Name</th>
+                <th className="admin_tbl_th">Email</th>
+                <th className="admin_tbl_th">Contact</th>
+                <th className="admin_tbl_th">Address</th>
+                <th className="admin_tbl_th">Tax</th>
+                <th className="admin_tbl_th">Recent Project</th>
+                <th className="admin_tbl_th">Current Project</th>
+                <th className="admin_tbl_th">Total</th>
+                <th className="admin_tbl_th">Actions</th>
               </tr>
             </thead>
             <tbody>
               {noResults ? (
                 <tr>
-                  <td colSpan="10">No results found</td>
+                  <td className="admin_tbl_td" colSpan="10">
+                    No results found
+                  </td>
                 </tr>
               ) : (
                 clients.map((client) => (
                   <tr key={client._id}>
-                    <td>
-                      <input
-                        type="text"
-                        value={updateDataMap[client._id]?.name || ""}
-                        onChange={(e) => handleChange(e.target.value, client._id, "name")}
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        value={updateDataMap[client._id]?.bname || ""}
-                        onChange={(e) => handleChange(e.target.value, client._id, "bname")}
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        value={updateDataMap[client._id]?.email || ""}
-                        onChange={(e) => handleChange(e.target.value, client._id, "email")}
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        value={updateDataMap[client._id]?.contact || ""}
-                        onChange={(e) => handleChange(e.target.value, client._id, "contact")}
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        value={updateDataMap[client._id]?.address || ""}
-                        onChange={(e) => handleChange(e.target.value, client._id, "address")}
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="number"
-                        value={updateDataMap[client._id]?.tax || 0}
-                        onChange={(e) => handleChange(e.target.value, client._id, "tax")}
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        value={updateDataMap[client._id]?.rproject || ""}
-                        onChange={(e) => handleChange(e.target.value, client._id, "rproject")}
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        value={updateDataMap[client._id]?.cproject || ""}
-                        onChange={(e) => handleChange(e.target.value, client._id, "cproject")}
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="number"
-                        value={updateDataMap[client._id]?.total || 0}
-                        onChange={(e) => handleChange(e.target.value, client._id, "total")}
-                      />
-                    </td>
-                    <td>
-                      <button className="update_btn_client" onClick={() => handleUpdate(client._id)}>
+                    <td className="admin_tbl_td">{client.name}</td>
+                    <td className="admin_tbl_td">{client.bname}</td>
+                    <td className="admin_tbl_td">{client.email}</td>
+                    <td className="admin_tbl_td">{client.contact}</td>
+                    <td className="admin_tbl_td">{client.address}</td>
+                    <td className="admin_tbl_td">{client.tax}</td>
+                    <td className="admin_tbl_td">{client.rproject}</td>
+                    <td className="admin_tbl_td">{client.cproject}</td>
+                    <td className="admin_tbl_td">{client.total}</td>
+                    <td className="admin_tbl_td">
+                      <Link
+                        to={`/updateclient/${client._id}`}
+                        className="btn_dash_admin"
+                      >
                         Update
-                      </button>
-                      <button className="dlt_btn_client" onClick={() => handleDelete(client._id)}>
+                      </Link>
+
+                      <button
+                        className="btn_dash_admin_dlt"
+                        onClick={() => handleDelete(client._id)}
+                      >
                         Delete
                       </button>
                     </td>

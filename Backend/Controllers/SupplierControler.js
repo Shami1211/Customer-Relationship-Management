@@ -35,18 +35,33 @@ const getSupplierById = async (req, res, next) => {
 };
 
 const updateSupplier = async (req, res, next) => {
+  const id = req.params.id;
+  const { name, bname, email, contact, address, tax, total, date } =
+    req.body;
+
+  let suppliers;
+
   try {
-    const updatedSupplier = await Supplier.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
+    suppliers = await Supplier.findByIdAndUpdate(id, {
+      name: name,
+      bname: bname,
+      email: email,
+      contact: contact,
+      address: address,
+      tax: tax,
+      total: total,
+      date: date,
     });
-    if (!updatedSupplier) {
-      return res.status(404).json({ message: "Supplier not found" });
-    }
-    res.status(200).json({ updatedSupplier });
+    suppliers = await suppliers.save();
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Internal Server Error" });
+    console.log(err);
   }
+  if (!suppliers) {
+    return res
+      .status(404)
+      .json({ message: "Unable to Update Inventory Details" });
+  }
+  return res.status(200).json({ suppliers });
 };
 
 const deleteSupplier = async (req, res, next) => {
