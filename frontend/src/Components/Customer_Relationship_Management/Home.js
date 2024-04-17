@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
   boxHomeTest: {
     backgroundColor: "#2196f3",
     fontSize: 25,
-    width: 150,
+    width: 200,
     color: "white",
     border: "3px solid #2196f3",
     borderRadius: 8,

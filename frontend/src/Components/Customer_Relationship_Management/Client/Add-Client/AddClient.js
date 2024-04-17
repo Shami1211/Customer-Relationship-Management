@@ -5,6 +5,7 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
+import { CircularProgress, Paper, Container } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   adminTopicClient: {
@@ -35,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
   formBoxItemInput: {
     width: "100%",
     fontSize: 17,
-    padding: "8px",
+    padding: "0px",
     borderRadius: 3,
     margin: "8px 0",
     border: "1.5px solid #2196f3",
@@ -112,145 +113,110 @@ function AddClient() {
   };
 
   return (
-    <div>
-      <Typography variant="h1" className={classes.adminTopicClient}>
-        Add <span className="client-us">Client</span>
-      </Typography>
-      <div className={classes.itemFullBox}>
-        <form onSubmit={handleSubmit} className={classes.itemFormAdmin}>
+    <Container maxWidth="sm">
+    
+      {/* Centers the form */}
+      <Paper elevation={3} style={{ padding: 20, marginBottom: 20 }}>
+      
+        {/* Adds border */}
+        <Typography variant="h4" gutterBottom align="center">
+          Add Client
+        </Typography>
+        <form onSubmit={handleSubmit}>
           {/* Input fields for client information */}
-          {/* Name */}
-          <label className={classes.formBoxItemLabel}>Name</label>
           <br />
           <TextField
-            type="text"
+            label="Name"
             name="name"
             value={inputs.name}
             onChange={handleChange}
-            variant="outlined"
-            className={classes.formBoxItemInput}
+            fullWidth
             required
           />
           <br />
-
-          {/* Business Name */}
-          <label className={classes.formBoxItemLabel}>Business Name</label>
-          <br />
           <TextField
-            type="text"
+            label="Business Name"
             name="bname"
             value={inputs.bname}
             onChange={handleChange}
-            variant="outlined"
-            className={classes.formBoxItemInput}
+            fullWidth
             required
           />
-          <br />
-
-          {/* Email */}
-          <label className={classes.formBoxItemLabel}>Email</label>
           <br />
           <TextField
             type="email"
+            label="Email"
             name="email"
             value={inputs.email}
             onChange={handleChange}
-            variant="outlined"
-            className={classes.formBoxItemInput}
+            fullWidth
             required
           />
           <br />
-
-          {/* Contact */}
-          <label className={classes.formBoxItemLabel}>Contact</label>
-          <br />
           <TextField
-            type="text"
+            label="Contact"
             name="contact"
             value={inputs.contact}
             onChange={handleChange}
-            variant="outlined"
-            className={classes.formBoxItemInput}
+            fullWidth
             required
           />
           <br />
-
-          {/* Address */}
-          <label className={classes.formBoxItemLabel}>Address</label>
-          <br />
           <TextField
-            type="text"
+            label="Address"
             name="address"
             value={inputs.address}
             onChange={handleChange}
-            variant="outlined"
-            className={classes.formBoxItemInput}
+            fullWidth
             required
           />
           <br />
-
-          {/* Tax */}
-          <label className={classes.formBoxItemLabel}>Tax</label>
-          <br />
           <TextField
             type="number"
+            label="Tax"
             name="tax"
             value={inputs.tax}
             onChange={handleChange}
-            variant="outlined"
-            className={classes.formBoxItemInput}
+            fullWidth
             required
           />
           <br />
-
-          {/* Recent Project */}
-          <label className={classes.formBoxItemLabel}>Recent Project</label>
-          <br />
           <TextField
-            type="text"
+            label="Recent Project"
             name="rproject"
             value={inputs.rproject}
             onChange={handleChange}
-            variant="outlined"
-            className={classes.formBoxItemInput}
+            fullWidth
             required
           />
           <br />
-
-          {/* Current Project */}
-          <label className={classes.formBoxItemLabel}>Current Project</label>
-          <br />
           <TextField
-            type="text"
+            label="Current Project"
             name="cproject"
             value={inputs.cproject}
             onChange={handleChange}
-            variant="outlined"
-            className={classes.formBoxItemInput}
+            fullWidth
             required
           />
-          <br />
-
-          {/* Total */}
-          <label className={classes.formBoxItemLabel}>Total</label>
           <br />
           <TextField
             type="number"
+            label="Total"
             name="total"
             value={inputs.total}
             onChange={handleChange}
-            variant="outlined"
-            className={classes.formBoxItemInput}
+            fullWidth
             required
           />
-          <br />
 
-          <Button type="submit" className={classes.adminFormCenterBtn}>
-            Add Client
-          </Button>
+          <div style={{ textAlign: "center", margin: "25px 0" }}>
+            <Button type="submit" variant="contained" color="primary">
+            AddClient
+            </Button>
+          </div>
         </form>
-      </div>
-    </div>
+      </Paper>
+    </Container>
   );
 }
 

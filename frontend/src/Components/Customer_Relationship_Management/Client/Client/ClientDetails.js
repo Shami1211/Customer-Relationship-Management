@@ -27,6 +27,14 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     marginBottom: theme.spacing(2),
   },
+  topic: {
+    textAlign: "center",
+    fontSize: "50px",
+  },
+  topicsub: {
+    textAlign: "center",
+    fontSize: "30px",
+  },
   searchBoxAdmin: {
     display: "flex",
     alignItems: "center",
@@ -152,7 +160,7 @@ const ClientDetails = () => {
 
   return (
     <div className={classes.clientDetails}>
-      <Typography variant="h1" className={classes.adminTopicClient}>
+      <Typography variant="h1" className={classes.topic}>
         Admin <span className="admin_sub_topic_client">Dashboard</span>
       </Typography>
       <div className={classes.actionAdminCon}>
@@ -175,7 +183,11 @@ const ClientDetails = () => {
         </div>
         <div>
           <Link to="/add-client">
-            <Button variant="contained" color="primary" className={classes.btnDashAdmin}>
+            <Button
+              variant="contained"
+              color="primary"
+              className={classes.btnDashAdmin}
+            >
               Add Client
             </Button>
           </Link>
@@ -193,7 +205,7 @@ const ClientDetails = () => {
         <CircularProgress />
       ) : (
         <Paper ref={summaryRef}>
-          <Typography variant="h2" className={classes.adminTopicClient}>
+          <Typography variant="h2" className={classes.topicsub}>
             Client <span className="admin_sub_topic_client">Details</span>
           </Typography>
           {noResults && (
@@ -229,8 +241,17 @@ const ClientDetails = () => {
                   <TableCell>{client.cproject}</TableCell>
                   <TableCell>{client.total}</TableCell>
                   <TableCell>
-                    <Link to={`/updateclient/${client._id}`} className={classes.btnDashAdmin}>
-                      Update
+                    <Link
+                      to={`/updateclient/${client._id}`}
+                      className={classes.btnDashAdmin}
+                    >
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        className={classes.btnDashAdmin}
+                      >
+                        Update
+                      </Button>
                     </Link>
                     <Button
                       className={classes.btnDashAdminDlt}

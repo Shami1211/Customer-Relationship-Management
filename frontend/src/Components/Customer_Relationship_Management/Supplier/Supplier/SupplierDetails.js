@@ -2,13 +2,75 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
-
+import Typography from "@material-ui/core/Typography";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+import Table from "@material-ui/core/Table";
+import TableHead from "@material-ui/core/TableHead";
+import TableBody from "@material-ui/core/TableBody";
+import TableRow from "@material-ui/core/TableRow";
+import TableCell from "@material-ui/core/TableCell";
+import Paper from "@material-ui/core/Paper";
+import Alert from "@material-ui/lab/Alert";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import { makeStyles } from "@material-ui/core/styles";
 const URL = "http://localhost:8080/suppliers";
-
+const useStyles = makeStyles((theme) => ({
+  clientDetails: {
+    padding: theme.spacing(2),
+  },
+  actionAdminCon: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: theme.spacing(2),
+  },
+  topic: {
+    textAlign: "center",
+    fontSize: "50px",
+  },
+  topicsub: {
+    textAlign: "center",
+    fontSize: "30px",
+  },
+  searchBoxAdmin: {
+    display: "flex",
+    alignItems: "center",
+  },
+  searchInput: {
+    marginRight: theme.spacing(2),
+  },
+  adminTopicClient: {
+    fontWeight: "bold",
+    marginBottom: theme.spacing(2),
+  },
+  tableDetailsAdmin: {
+    marginTop: theme.spacing(2),
+  },
+  alertNoResults: {
+    marginBottom: theme.spacing(2),
+  },
+  btnDashAdmin: {
+    marginRight: theme.spacing(2),
+  },
+  btnDashAdminDlt: {
+    backgroundColor: "red",
+    color: "white",
+    border: "2px solid red",
+    fontWeight: "bold",
+    textTransform: "capitalize",
+    "&:hover": {
+      backgroundColor: "#d32f2f",
+      border: "2px solid #d32f2f",
+    },
+  },
+}));
 const SupplierDetails = () => {
+  const classes = useStyles();
   const navigate = useNavigate();
   const [suppliers, setSuppliers] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [loading, setLoading] = useState(false);
   const [noResults, setNoResults] = useState(false);
   const [updateData, setUpdateData] = useState({
     id: "",
@@ -102,95 +164,110 @@ const SupplierDetails = () => {
   });
 
   return (
-    <div className="clientdetails">
-      <div className="admin_topic_client">
-        Admin<span className="admin_sub_topic_supplier"> Dashboard</span>
-      </div>
-      <div className="supplier_details_body">
-        <div className="action_admin_con">
-          <div className="search_box_admin">
-            <input
-              onChange={(e) => setSearchQuery(e.target.value)}
-              type="text"
-              name="search"
-              className="serch_inpt"
-              placeholder="Search Clients"
-            />
-            <button onClick={handleSearch} className="btn_dash_admin">
-              Search
-            </button>
-          </div>
-          <div className="btn_con_client">
-            <Link to="/add-supplier">
-              <button className="btn_dash_admin">Add Supplier</button>
-            </Link>
-            <button
-              type="submit"
-              className="btn_dash_admin"
-              onClick={handlePrint}
-            >
-              Generate Report
-            </button>
-          </div>
+    <div className={classes.clientDetails}>
+      <Typography variant="h1" className={classes.topic}>
+        Admin <span className="admin_sub_topic_client">Dashboard</span>
+      </Typography>
+      <div className={classes.actionAdminCon}>
+        <div className={classes.searchBoxAdmin}>
+          <TextField
+            onChange={(e) => setSearchQuery(e.target.value)}
+            type="text"
+            name="search"
+            className={classes.searchInput}
+            placeholder="Search Clients"
+          />
+          <Button
+            onClick={handleSearch}
+            variant="contained"
+            color="primary"
+            className={classes.btnDashAdmin}
+          >
+            Search
+          </Button>
         </div>
-        <div ref={summaryRef}>
-          <div className="admin_topic_client">
-            Supplier<span className="admin_sub_topic_client"> Details</span>
-          </div>
+        <div>
+          <Link to="/add-supplier">
+            <Button
+              variant="contained"
+              color="primary"
+              className={classes.btnDashAdmin}
+            >
+              Add Suplier
+            </Button>
+          </Link>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.btnDashAdmin}
+            onClick={handlePrint}
+          >
+            Generate Report
+          </Button>
+        </div>
+      </div>
+      {loading ? (
+        <CircularProgress />
+      ) : (
+        <Paper ref={summaryRef}>
+          <Typography variant="h2" className={classes.topicsub}>
+          Suplier <span className="admin_sub_topic_client">Details</span>
+          </Typography>
+          {noResults && (
+            <Alert severity="info" className={classes.alertNoResults}>
+              No results found
+            </Alert>
+          )}
+          <Table className={classes.tableDetailsAdmin}>
+            <TableHead>
+              <TableRow>
+                <TableCell>Name</TableCell>
+                <TableCell>Business Name</TableCell>
+                <TableCell>Email</TableCell>
+                <TableCell>Contact</TableCell>
+                <TableCell>Address</TableCell>
+                <TableCell>Tax</TableCell>
+                <TableCell>Total</TableCell>
+                <TableCell>Actions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {suppliers.map((supplier) => (
+                <TableRow key={supplier._id}>
+                  <TableCell>{supplier.name}</TableCell>
+                  <TableCell>{supplier.bname}</TableCell>
+                  <TableCell>{supplier.email}</TableCell>
+                  <TableCell>{supplier.contact}</TableCell>
+                  <TableCell>{supplier.address}</TableCell>
+                  <TableCell>{supplier.tax}</TableCell>
 
-          <br />
-          <table className="table_details_admin">
-            <thead>
-              <tr>
-                <th className="admin_tbl_th">Name</th>
-                <th className="admin_tbl_th">Business Name</th>
-                <th className="admin_tbl_th">Email</th>
-                <th className="admin_tbl_th">Contact</th>
-                <th className="admin_tbl_th">Address</th>
-                <th className="admin_tbl_th">Tax</th>
-                <th className="admin_tbl_th">Total</th>
-                <th className="admin_tbl_th">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {noResults ? (
-                <tr>
-                  <td className="admin_tbl_td" colSpan="8">
-                    No results found
-                  </td>
-                </tr>
-              ) : (
-                suppliers.map((supplier) => (
-                  <tr key={supplier._id}>
-                    <td className="admin_tbl_td">{supplier.name}</td>
-                    <td className="admin_tbl_td">{supplier.bname}</td>
-                    <td className="admin_tbl_td">{supplier.email}</td>
-                    <td className="admin_tbl_td">{supplier.contact}</td>
-                    <td className="admin_tbl_td">{supplier.address}</td>
-                    <td className="admin_tbl_td">{supplier.tax}</td>
-                    <td className="admin_tbl_td">{supplier.total}</td>
-                    <td className="admin_tbl_td">
-                     
-                      <Link
-                        to={`/updatesuplier/${supplier._id}`}
-                        className="btn_dash_admin"
+                  <TableCell>{supplier.total}</TableCell>
+                  <TableCell>
+                    <Link
+                      to={`/updatesuplier/${supplier._id}`}
+                      className={classes.btnDashAdmin}
+                    >
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        className={classes.btnDashAdmin}
                       >
                         Update
-                      </Link>
-                      <button
-                        className="btn_dash_admin_dlt"
-                        onClick={() => handleDelete(supplier._id)}
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
-      </div>
+                      </Button>
+                    </Link>
+                    <Button
+                      className={classes.btnDashAdminDlt}
+                      onClick={() => handleDelete(supplier._id)}
+                    >
+                      Delete
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </Paper>
+      )}
     </div>
   );
 };
